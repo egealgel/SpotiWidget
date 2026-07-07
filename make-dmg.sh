@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Builds a distributable SpotiWidget.dmg containing the app plus an
+# /Applications shortcut for drag-to-install.
+#
+set -euo pipefail
+cd "$(dirname "$0")"
+
+APP_NAME="SpotiWidget"
+BUNDLE_ID="com.spotiwidget.app"
+DMG="$APP_NAME.dmg"
+
+echo "==> Building release binary…"
+swift build -c release
+BIN="$(swift build -c release --show-bin-path)/$APP_NAME"
+
+# Assemble everything in a temp dir so no .app is left in the project folder
+# (a stray app here gets indexed by Spotlight/Launchpad as a duplicate).
+STAGING="$(mktemp -d)"
+trap 'rm -rf "$STAGING"' EXIT
+APP_DIR="$STAGING/$APP_NAME.app"
+
+echo "==> Assembling app bundle…"
+mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
+cp "$BIN" "$APP_DIR/Contents/MacOS/$APP_NAME"
+cp Info.plist "$APP_DIR/Contents/Info.plist"
+cp Resources/AppIcon.icns "$APP_DIR/Contents/Resources/AppIcon.icns"
+codesign --force --sign - --identifier "$BUNDLE_ID" "$APP_DIR"
+
+echo "==> Building DMG…"
+ln -s /Applications "$STAGING/Applications"
+rm -f "$DMG"
+hdiutil create -volname "$APP_NAME" -srcfolder "$STAGING" -ov -format UDZO "$DMG" >/dev/null
+
+echo ""
+echo "Done: $(pwd)/$DMG"
+echo "Open it and drag SpotiWidget into Applications. To make it auto-start"
+echo "at login on a machine, run ./install.sh from the source folder."

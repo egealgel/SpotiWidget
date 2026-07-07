@@ -1,0 +1,14 @@
+# Build products
+.build/
+.swiftpm/
+DerivedData/
+
+# Distribution artifacts (built via ./make-dmg.sh; attach to a Release instead)
+dist/
+*.dmg
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
