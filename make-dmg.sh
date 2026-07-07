@@ -34,5 +34,5 @@ hdiutil create -volname "$APP_NAME" -srcfolder "$STAGING" -ov -format UDZO "$DMG
 
 echo ""
 echo "Done: $(pwd)/$DMG"
-echo "Open it and drag SpotiWidget into Applications. To make it auto-start"
-echo "at login on a machine, run ./install.sh from the source folder."
+echo "Open it, drag SpotiWidget into Applications, then launch it once."
+echo "It registers itself to open at login automatically."

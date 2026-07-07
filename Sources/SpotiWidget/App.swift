@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import ServiceManagement
 
 @main
 struct SpotiWidgetApp: App {
@@ -22,6 +23,20 @@ struct SpotiWidgetApp: App {
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        registerLoginItem()
+    }
+
+    /// Registers the app to open automatically at login, so a plain
+    /// drag-to-Applications install (via the DMG) still auto-starts — no script
+    /// needed. Idempotent; users can toggle it in System Settings › Login Items.
+    private func registerLoginItem() {
+        let service = SMAppService.mainApp
+        guard service.status != .enabled else { return }
+        do {
+            try service.register()
+        } catch {
+            FileHandle.standardError.write(Data("[SpotiWidget] login item register failed: \(error)\n".utf8))
+        }
     }
 }
 

@@ -26,37 +26,33 @@ no login, no API keys, no Spotify Premium requirement for playback control.
 
 - macOS 13 (Ventura) or later
 - The **Spotify desktop app** installed and running
-- Swift toolchain (comes with Xcode or the Xcode Command Line Tools)
 
-## Install (recommended)
+## Install
 
-```bash
-./install.sh
-```
-
-This builds a release `.app`, installs it to `~/Applications/SpotiWidget.app`,
-code-signs it with a stable identity, and registers a LaunchAgent so it:
-
-- **starts automatically at login**, and
-- **restarts itself** if it ever quits (`KeepAlive`).
+1. Download **SpotiWidget.dmg** from the
+   [latest release](https://github.com/egealgel/SpotiWidget/releases/latest).
+2. Open the DMG and drag **SpotiWidget** into your **Applications** folder.
+3. Launch it. The first time, macOS may block it because it isn't notarized —
+   **right-click the app → Open**, then confirm. (You only do this once.)
+4. That's it. It lives in your menu bar and **registers itself to open at login**
+   automatically — no Terminal, no scripts.
 
 The first time it controls Spotify, macOS asks for **Automation** permission
 (System Settings → Privacy & Security → Automation → allow SpotiWidget → Spotify).
-Because the app is signed with a stable identity, you only grant this once.
 
-To remove everything:
+**To quit / disable it:** remove it under System Settings → General → Login
+Items, or just drag the app from Applications to the Trash.
 
-```bash
-./uninstall.sh
-```
-
-## Quick run (development)
+## Build from source (optional)
 
 ```bash
-swift run          # build and launch, no install
+git clone https://github.com/egealgel/SpotiWidget.git
+cd SpotiWidget
+./install.sh        # builds a release .app and installs it to /Applications
 ```
 
-To quit a running instance: click the menu bar icon → the power button.
+`./make-dmg.sh` produces a distributable DMG, and `./uninstall.sh` removes the
+app. Building requires the Swift toolchain (Xcode or Command Line Tools).
 
 ## Note on "liking" tracks
 
