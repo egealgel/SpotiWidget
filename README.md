@@ -14,13 +14,13 @@ no login, no API keys, no Spotify Premium requirement for playback control.
 
 ## Features
 
-- 🎵 **Now playing** — song, artist, album, and album artwork
-- ⏯️ **Playback controls** — play/pause, next, previous (instant, optimistic UI)
-- ⏱️ **Seekable progress bar** with elapsed / total time (live scrubbing)
-- 🔊 **Volume slider** (live)
-- 🎨 **Album-coloured gradient** background that cross-fades per track
-- 🎧 Menu-bar-only (no Dock icon); shows the Spotify logo when nothing is playing
-- ⚡ Lightweight — ~13 MB, ~0% CPU when idle
+-  **Now playing** — song, artist, album, and album artwork
+-  **Playback controls** — play/pause, next, previous (instant, optimistic UI)
+-  **Seekable progress bar** with elapsed / total time (live scrubbing)
+-  **Volume slider** (live)
+-  **Album-coloured gradient** background that cross-fades per track
+-  Menu-bar-only (no Dock icon); shows the Spotify logo when nothing is playing
+-  Lightweight — ~13 MB, ~0% CPU when idle
 
 ## Requirements
 
