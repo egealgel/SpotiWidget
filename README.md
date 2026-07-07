@@ -1,7 +1,7 @@
 # SpotiWidget
 
 A lightweight **macOS menu bar widget for Spotify**, written in native Swift +
-SwiftUI (`MenuBarExtra`). It controls the Spotify desktop app over AppleScript —
+SwiftUI. It controls the Spotify desktop app over AppleScript —
 no login, no API keys, no Spotify Premium requirement for playback control.
 
 ## Screenshots
