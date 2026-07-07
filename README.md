@@ -6,9 +6,7 @@ no login, no API keys, no Spotify Premium requirement for playback control.
 
 ## Screenshots
 
-<img width="651" height="35" alt="Ekran Resmi 2026-07-07 17 20 50" src="https://github.com/user-attachments/assets/6c0076f4-9609-4fef-9810-40a75a74720e" />
-
-<img width="301" height="512" alt="Ekran Resmi 2026-07-07 17 21 06" src="https://github.com/user-attachments/assets/6c47255c-5ee7-4882-8ee3-eded5ab64a03" />
+<img width="651" height="35" alt="Ekran Resmi 2026-07-07 17 20 50" src="https://github.com/user-attachments/assets/6c0076f4-9609-4fef-9810-40a75a74720e" />      <img width="301" height="512" alt="Ekran Resmi 2026-07-07 17 21 06" src="https://github.com/user-attachments/assets/6c47255c-5ee7-4882-8ee3-eded5ab64a03" />
 
 
 
