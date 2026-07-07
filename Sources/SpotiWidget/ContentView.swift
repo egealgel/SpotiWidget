@@ -118,8 +118,10 @@ struct ContentView: View {
     }
 
     private var controls: some View {
-        HStack(spacing: 20) {
-            ControlButton(system: "backward.fill", size: 16, action: spotify.previous)
+        HStack(spacing: 14) {
+            ToggleButton(system: "shuffle", size: 13, on: spotify.isShuffling, action: spotify.toggleShuffle)
+
+            ControlButton(system: "backward.fill", size: 15, action: spotify.previous)
 
             Button(action: spotify.playPause) {
                 ZStack {
@@ -136,7 +138,9 @@ struct ContentView: View {
             .buttonStyle(PressableButtonStyle())
             .animation(.spring(response: 0.3, dampingFraction: 0.55), value: spotify.isPlaying)
 
-            ControlButton(system: "forward.fill", size: 16, action: spotify.next)
+            ControlButton(system: "forward.fill", size: 15, action: spotify.next)
+
+            ToggleButton(system: "repeat", size: 13, on: spotify.isRepeating, action: spotify.toggleRepeat)
         }
         .padding(.vertical, 2)
     }
@@ -215,6 +219,36 @@ private struct ControlButton: View {
         .onHover { h in
             withAnimation(.easeOut(duration: 0.15)) { hovering = h }
         }
+    }
+}
+
+/// A small toggle (shuffle / repeat): tinted green when active, with a green dot
+/// underneath, dimmed when off.
+private struct ToggleButton: View {
+    let system: String
+    let size: CGFloat
+    let on: Bool
+    let action: () -> Void
+    @State private var hovering = false
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 2) {
+                Image(systemName: system)
+                    .font(.system(size: size, weight: .semibold))
+                    .foregroundStyle(on ? spotifyGreen : Color.primary.opacity(0.55))
+                Circle()
+                    .fill(spotifyGreen)
+                    .frame(width: 3, height: 3)
+                    .opacity(on ? 1 : 0)
+            }
+            .frame(width: size * 2.4, height: size * 2.4)
+            .background(Circle().fill(Color.primary.opacity(hovering ? 0.12 : 0)))
+            .contentShape(Circle())
+        }
+        .buttonStyle(PressableButtonStyle())
+        .onHover { h in withAnimation(.easeOut(duration: 0.15)) { hovering = h } }
+        .animation(.easeOut(duration: 0.15), value: on)
     }
 }
 

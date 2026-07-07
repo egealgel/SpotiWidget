@@ -16,6 +16,8 @@ final class SpotifyController: ObservableObject {
     @Published var position: Double = 0      // seconds
     @Published var duration: Double = 0      // seconds
     @Published var volume: Double = 0        // 0...100
+    @Published var isShuffling = false
+    @Published var isRepeating = false
     @Published var artwork: NSImage?
 
     // Album-derived gradient colors for the panel background.
@@ -38,6 +40,7 @@ final class SpotifyController: ObservableObject {
     private var lastSeekSent = Date.distantPast
     private var volumeHoldUntil = Date.distantPast
     private var playStateHoldUntil = Date.distantPast
+    private var shuffleRepeatHoldUntil = Date.distantPast
     private var isPolling = false
     private var isPopoverOpen = false
 
@@ -102,6 +105,20 @@ final class SpotifyController: ObservableObject {
 
     func next()         { run("tell application \"Spotify\" to next track"); refreshSoon() }
     func previous()     { run("tell application \"Spotify\" to previous track"); refreshSoon() }
+
+    func toggleShuffle() {
+        isShuffling.toggle()
+        shuffleRepeatHoldUntil = Date().addingTimeInterval(0.6)
+        run("tell application \"Spotify\" to set shuffling to \(isShuffling)")
+        refreshSoon()
+    }
+
+    func toggleRepeat() {
+        isRepeating.toggle()
+        shuffleRepeatHoldUntil = Date().addingTimeInterval(0.6)
+        run("tell application \"Spotify\" to set repeating to \(isRepeating)")
+        refreshSoon()
+    }
 
     func setVolume(_ value: Double) {
         let v = Int(max(0, min(100, value)))
@@ -175,7 +192,9 @@ final class SpotifyController: ObservableObject {
                 set trackPos to player position
                 set trackVol to sound volume
                 set trackIdent to id of current track
-                return playerState & "\\n" & trackName & "\\n" & trackArtist & "\\n" & trackAlbum & "\\n" & trackArt & "\\n" & trackDur & "\\n" & trackPos & "\\n" & trackVol & "\\n" & trackIdent
+                set trackShuffle to shuffling
+                set trackRepeat to repeating
+                return playerState & "\\n" & trackName & "\\n" & trackArtist & "\\n" & trackAlbum & "\\n" & trackArt & "\\n" & trackDur & "\\n" & trackPos & "\\n" & trackVol & "\\n" & trackIdent & "\\n" & trackShuffle & "\\n" & trackRepeat
             end tell
         else
             return "notrunning"
@@ -239,6 +258,11 @@ final class SpotifyController: ObservableObject {
             syncedAt = Date()
         }
         if !isAdjustingVolume, Date() >= volumeHoldUntil { volume = number(f[7]) }
+
+        if f.count >= 11, Date() >= shuffleRepeatHoldUntil {
+            isShuffling = (f[9] == "true")
+            isRepeating = (f[10] == "true")
+        }
 
         let newTrackID = f[8]
         if newTrackID != trackID {
